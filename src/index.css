@@ -135,16 +135,16 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--background-dark);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: var(--gradient-primary);
+  background: transparent;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--primary-purple);
+  background: transparent;
 }
 
 /* 焦点样式 */
@@ -256,7 +256,7 @@
 /* 自定义滚动条样式 */
 .custom-scrollbar {
   scrollbar-width: thin;
-  scrollbar-color: rgb(156 163 175) transparent;
+  scrollbar-color: transparent transparent;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -268,24 +268,24 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgb(156 163 175);
+  background-color: transparent;
   border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(107 114 128);
+  background-color: transparent;
 }
 
 .dark .custom-scrollbar {
-  scrollbar-color: rgb(75 85 99) transparent;
+  scrollbar-color: transparent transparent;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: rgb(75 85 99);
+  background-color: transparent;
 }
 
 .dark .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: rgb(107 114 128);
+  background-color: transparent;
 }
 
 /* 左右布局样式 */

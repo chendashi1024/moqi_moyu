@@ -70,10 +70,10 @@ export const PlatformCard = ({
                   e.stopPropagation();
                   onFullscreen();
                 }}
-                className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
+                className="p-1 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-all duration-300 hover:shadow-md transform hover:-translate-y-0.5"
                 title="全屏显示"
               >
-                <Maximize2 className="w-3 h-3 text-gray-500 dark:text-gray-400" />
+                <Maximize2 className="w-3 h-3 text-gray-500 dark:text-gray-400 transform transition-transform duration-300 hover:scale-125" />
               </button>
             )}
             {/* <div className="text-xs cosmic-text-muted">实时</div> */}
