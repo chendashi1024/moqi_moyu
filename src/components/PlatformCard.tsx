@@ -137,6 +137,7 @@ export const PlatformCard = ({
                       onMouseLeave={(e) => {
                         e.currentTarget.style.color = "var(--text-white)";
                       }}
+                      title={item.title}
                     >
                       {item.title}
                     </h4>

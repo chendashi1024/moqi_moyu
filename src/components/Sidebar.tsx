@@ -99,9 +99,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <h1 className="text-xl font-bold cosmic-title animate-star-glow">
                       {isStealthMode ? "Excel Dashboard" : "mo契摸鱼热榜"}
                     </h1>
-                    <p className="text-sm cosmic-text-secondary">
+                    {/* <p className="text-sm cosmic-text-secondary">
                       {isStealthMode ? "Data Analytics" : "多平台热榜聚合"}
-                    </p>
+                    </p> */}
                   </div>
                 )}
               </div>

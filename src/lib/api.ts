@@ -33,10 +33,8 @@ export const updatePlatformsFromApi = (apiPlatforms: MomoyuPlatform[]) => {
 // Supabase 热榜 API 服务
 export class MomoyuApiService {
   // 开发环境使用代理，生产环境直接访问 Supabase
-  private static readonly API_URL = import.meta.env.DEV
-    ? "/api/hot_list"
-    : import.meta.env.VITE_SUPABASE_HOTLIST_URL ||
-      "https://qguuzxljrertmjypatge.supabase.co/functions/v1/hot_list";
+  private static readonly API_URL =
+    "https://qguuzxljrertmjypatge.supabase.co/functions/v1/hot_list";
   private static readonly MAX_RETRIES = 2;
   private static readonly RETRY_DELAY = 1000;
 

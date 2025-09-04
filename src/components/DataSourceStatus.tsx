@@ -34,7 +34,7 @@ export const DataSourceStatus: React.FC<DataSourceStatusProps> = ({
         backdropFilter: "blur(10px)",
       }}
     >
-      {isRealData ? (
+      {/* {isRealData ? (
         <>
           <Wifi className="w-3 h-3" />
           <span>实时数据</span>
@@ -44,11 +44,13 @@ export const DataSourceStatus: React.FC<DataSourceStatusProps> = ({
           <WifiOff className="w-3 h-3" />
           <span>演示数据</span>
         </>
-      )}
+      )} */}
 
       {lastUpdateTime && <span className="opacity-75">·</span>}
 
-      {lastUpdateTime && <span className="opacity-75">{lastUpdateTime}</span>}
+      {lastUpdateTime && (
+        <span className="opacity-75">更新时间：{lastUpdateTime}</span>
+      )}
 
       {apiError && (
         <>

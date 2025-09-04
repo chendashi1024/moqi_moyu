@@ -9,6 +9,7 @@ export default defineConfig({
     sourcemap: "hidden",
   },
   server: {
+    open: true,
     proxy: {
       // 代理 smooth-api 函数调用到具体的函数地址
       "/api/smooth-api": {
