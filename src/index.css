@@ -2,13 +2,113 @@
 @tailwind components;
 @tailwind utilities;
 
+/* 导入字体 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* 星座主题 CSS 变量 */
+:root {
+  /* 主色调 - 紫色系 */
+  --primary-purple: #8e7bff;
+  --secondary-purple: #ad87fd;
+  --light-purple: #b4a6ff;
+  --dark-purple: #361d9b;
+  --purple-glow: rgba(142, 123, 255, 0.3);
+  
+  /* 背景色 */
+  --background-dark: #0a0118;
+  --background-secondary: #1a0f2e;
+  --background-tertiary: #2d1b4e;
+  --card-bg: rgba(255, 255, 255, 0.08);
+  --card-bg-hover: rgba(255, 255, 255, 0.12);
+  
+  /* 文本色 */
+  --text-white: #ffffff;
+  --text-gray: rgba(255, 255, 255, 0.7);
+  --text-muted: rgba(255, 255, 255, 0.5);
+  
+  /* 边框和阴影 */
+  --border-color: rgba(142, 123, 255, 0.3);
+  --border-radius: 20px;
+  --shadow-light: 0 4px 24px rgba(125, 122, 143, 0.10);
+  --shadow-glow: 0 0 30px rgba(142, 123, 255, 0.3);
+  
+  /* 渐变 */
+  --gradient-primary: linear-gradient(135deg, #ad87fd 0%, #8e7bff 100%);
+  --gradient-secondary: linear-gradient(135deg, #e5d9ff 0%, #b4a6ff 100%);
+  --gradient-cosmic: linear-gradient(180deg, #0a0118 0%, #1a0f2e 25%, #2d1b4e 50%, #1a0f2e 75%, #0a0118 100%);
+}
+
 @layer base {
   html {
     font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
   }
   
   body {
-    @apply bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100;
+    background: var(--gradient-cosmic);
+    color: var(--text-white);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+  
+  /* 全局星空背景 */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100vw;
+    height: 100vh;
+    background-image: 
+      /* 超亮星星 */
+      radial-gradient(4px 4px at 25% 15%, rgba(255, 255, 255, 1), rgba(255, 255, 255, 0.3) 30%, transparent),
+      radial-gradient(3px 3px at 75% 25%, rgba(180, 166, 255, 0.9), rgba(180, 166, 255, 0.2) 40%, transparent),
+      radial-gradient(4px 4px at 45% 65%, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.2) 35%, transparent),
+      radial-gradient(3px 3px at 85% 80%, rgba(173, 135, 253, 0.9), rgba(173, 135, 253, 0.2) 40%, transparent),
+      
+      /* 大星星 */
+      radial-gradient(3px 3px at 15% 20%, rgba(255, 255, 255, 0.9), transparent),
+      radial-gradient(2px 2px at 85% 15%, var(--light-purple), transparent),
+      radial-gradient(3px 3px at 70% 35%, rgba(255, 255, 255, 0.8), transparent),
+      radial-gradient(2px 2px at 25% 60%, var(--secondary-purple), transparent),
+      radial-gradient(3px 3px at 90% 70%, rgba(255, 255, 255, 0.7), transparent),
+      radial-gradient(2px 2px at 10% 85%, var(--light-purple), transparent),
+      
+      /* 中等星星 */
+      radial-gradient(2px 2px at 30% 10%, rgba(255, 255, 255, 0.6), transparent),
+      radial-gradient(1px 1px at 60% 25%, var(--secondary-purple), transparent),
+      radial-gradient(2px 2px at 45% 45%, rgba(255, 255, 255, 0.5), transparent),
+      radial-gradient(1px 1px at 80% 55%, var(--light-purple), transparent),
+      radial-gradient(2px 2px at 20% 75%, rgba(255, 255, 255, 0.6), transparent),
+      radial-gradient(1px 1px at 65% 85%, var(--secondary-purple), transparent),
+      
+      /* 小星星点缀 */
+      radial-gradient(1px 1px at 40% 5%, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1px 1px at 75% 8%, rgba(255, 255, 255, 0.3), transparent),
+      radial-gradient(1px 1px at 55% 18%, var(--light-purple), transparent),
+      radial-gradient(1px 1px at 15% 35%, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1px 1px at 85% 40%, var(--secondary-purple), transparent),
+      radial-gradient(1px 1px at 35% 65%, rgba(255, 255, 255, 0.3), transparent),
+      radial-gradient(1px 1px at 75% 78%, rgba(255, 255, 255, 0.4), transparent),
+      radial-gradient(1px 1px at 50% 90%, var(--light-purple), transparent),
+      radial-gradient(1px 1px at 92% 12%, rgba(255, 255, 255, 0.3), transparent),
+      radial-gradient(1px 1px at 8% 88%, var(--secondary-purple), transparent),
+      
+      /* 银河系光带 */
+      linear-gradient(
+        45deg,
+        transparent 20%,
+        rgba(142, 123, 255, 0.08) 35%,
+        rgba(180, 166, 255, 0.12) 50%,
+        rgba(173, 135, 253, 0.08) 65%,
+        transparent 80%
+      );
+    
+    background-size: 100% 100%;
+    animation: galaxyTwinkle 20s ease-in-out infinite alternate;
+    z-index: -1;
+    pointer-events: none;
   }
 }
 
@@ -28,22 +128,23 @@
   }
 }
 
-/* 自定义滚动条 */
+/* 星座主题滚动条 */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 8px;
+  height: 8px;
 }
 
 ::-webkit-scrollbar-track {
-  @apply bg-gray-100 dark:bg-gray-800;
+  background: var(--background-dark);
 }
 
 ::-webkit-scrollbar-thumb {
-  @apply bg-gray-300 dark:bg-gray-600 rounded-full;
+  background: var(--gradient-primary);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-400 dark:bg-gray-500;
+  background: var(--primary-purple);
 }
 
 /* 焦点样式 */
@@ -51,7 +152,7 @@
   @apply outline-none ring-2 ring-blue-500 ring-offset-2 dark:ring-offset-gray-900;
 }
 
-/* 动画 */
+/* 星座主题动画 */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -63,8 +164,82 @@
   }
 }
 
+@keyframes galaxyTwinkle {
+  0% { 
+    opacity: 0.7;
+    transform: scale(1) rotate(0deg);
+  }
+  25% { 
+    opacity: 0.85;
+    transform: scale(1.01) rotate(0.5deg);
+  }
+  50% { 
+    opacity: 0.9;
+    transform: scale(1.02) rotate(1deg);
+  }
+  75% { 
+    opacity: 0.8;
+    transform: scale(1.01) rotate(0.5deg);
+  }
+  100% { 
+    opacity: 0.7;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes starGlow {
+  0% {
+    text-shadow: 0 0 10px rgba(100, 232, 222, 0.5);
+  }
+  50% {
+    text-shadow: 0 0 20px rgba(138, 100, 235, 0.9), 0 0 30px rgba(100, 232, 222, 0.5);
+  }
+  100% {
+    text-shadow: 0 0 10px rgba(100, 232, 222, 0.5);
+  }
+}
+
+@keyframes cosmicPulse {
+  0% {
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    transform: scale(1);
+  }
+  50% {
+    text-shadow: 0 0 25px rgba(173, 135, 253, 0.9), 0 0 35px rgba(255, 107, 107, 0.6);
+    transform: scale(1.03);
+  }
+  100% {
+    text-shadow: 0 0 10px rgba(255, 107, 107, 0.5);
+    transform: scale(1);
+  }
+}
+
+@keyframes cardGlow {
+  0% {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  }
+  50% {
+    box-shadow: 0 8px 32px rgba(142, 123, 255, 0.2), 0 0 20px rgba(142, 123, 255, 0.1);
+  }
+  100% {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.1);
+  }
+}
+
 .animate-fade-in {
   animation: fadeIn 0.3s ease-out;
+}
+
+.animate-star-glow {
+  animation: starGlow 3s ease-in-out infinite;
+}
+
+.animate-cosmic-pulse {
+  animation: cosmicPulse 4s ease-in-out infinite;
+}
+
+.animate-card-glow {
+  animation: cardGlow 6s ease-in-out infinite;
 }
 
 :root {
@@ -232,4 +407,120 @@
 .main-content {
   height: 100vh;
   overflow: hidden;
+}
+
+/* 星座主题组件样式 */
+@layer components {
+  .cosmic-card {
+    @apply relative overflow-hidden;
+    background: var(--card-bg);
+    backdrop-filter: blur(15px);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    transition: all 0.3s ease;
+  }
+  
+  .cosmic-card:hover {
+    background: var(--card-bg-hover);
+    border-color: var(--light-purple);
+    box-shadow: var(--shadow-glow);
+    transform: translateY(-5px);
+  }
+  
+  .cosmic-sidebar {
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border-right: 1px solid var(--border-color);
+  }
+  
+  .cosmic-text-primary {
+    color: var(--text-white);
+  }
+  
+  .cosmic-text-secondary {
+    color: var(--text-gray);
+  }
+  
+  .cosmic-text-muted {
+    color: var(--text-muted);
+  }
+  
+  .cosmic-button-primary {
+    background: var(--gradient-primary);
+    color: var(--text-white);
+    border: none;
+    border-radius: 25px;
+    padding: 12px 24px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 25px rgba(142, 123, 255, 0.3);
+  }
+  
+  .cosmic-button-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 35px rgba(142, 123, 255, 0.4);
+  }
+  
+  .cosmic-button-secondary {
+    background: transparent;
+    color: var(--light-purple);
+    border: 2px solid var(--border-color);
+    border-radius: 25px;
+    padding: 10px 22px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  
+  .cosmic-button-secondary:hover {
+    background: var(--primary-purple);
+    color: var(--text-white);
+    border-color: var(--primary-purple);
+    transform: translateY(-2px);
+  }
+  
+  .cosmic-input {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    color: var(--text-white);
+    backdrop-filter: blur(10px);
+  }
+  
+  .cosmic-input:focus {
+    border-color: var(--primary-purple);
+    box-shadow: 0 0 0 3px rgba(142, 123, 255, 0.1);
+    outline: none;
+  }
+  
+  .cosmic-nav-item {
+    @apply flex items-center space-x-3 p-3 rounded-lg transition-all duration-300;
+    color: var(--text-gray);
+  }
+  
+  .cosmic-nav-item:hover {
+    background: var(--card-bg);
+    color: var(--text-white);
+    transform: translateX(5px);
+  }
+  
+  .cosmic-nav-item.active {
+    background: var(--card-bg-hover);
+    color: var(--light-purple);
+    border-left: 3px solid var(--primary-purple);
+  }
+  
+  .cosmic-title {
+    background: var(--gradient-secondary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    filter: drop-shadow(0 0 15px var(--purple-glow));
+  }
+  
+  .cosmic-glow {
+    filter: drop-shadow(0 0 10px var(--purple-glow));
+  }
 }

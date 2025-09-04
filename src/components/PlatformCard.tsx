@@ -37,11 +37,14 @@ export const PlatformCard = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 mb-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col h-[400px]">
+    <div className="cosmic-card mb-5 rounded-xl overflow-hidden animate-card-glow flex flex-col h-[400px]">
       {/* 平台头部 */}
       <div
-        className="p-2 border-b border-gray-200 dark:border-gray-700 flex-shrink-0"
-        style={{ backgroundColor: `${platform.color}10` }}
+        className="p-2 border-b flex-shrink-0"
+        style={{
+          backgroundColor: `${platform.color}10`,
+          borderColor: "var(--border-color)",
+        }}
       >
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-1.5">
@@ -52,12 +55,10 @@ export const PlatformCard = ({
               {getPlatformIcon(platform.id)}
             </div>
             <div>
-              <h3 className="font-medium text-gray-900 dark:text-white text-xs">
+              <h3 className="font-medium cosmic-text-primary text-xs cosmic-glow">
                 {platform.name}
               </h3>
-              <p className="text-xs text-gray-500 dark:text-gray-400">
-                {items.length} 条
-              </p>
+              <p className="text-xs cosmic-text-muted">{items.length} 条</p>
             </div>
           </div>
 
@@ -75,7 +76,7 @@ export const PlatformCard = ({
                 <Maximize2 className="w-3 h-3 text-gray-500 dark:text-gray-400" />
               </button>
             )}
-            <div className="text-xs text-gray-500 dark:text-gray-400">实时</div>
+            <div className="text-xs cosmic-text-muted">实时</div>
           </div>
         </div>
       </div>
@@ -83,7 +84,7 @@ export const PlatformCard = ({
       {/* 热榜列表 */}
       <div className="flex-1 overflow-y-auto custom-scrollbar min-h-0">
         {items.length === 0 ? (
-          <div className="flex items-center justify-center h-full text-gray-500 dark:text-gray-400">
+          <div className="flex items-center justify-center h-full cosmic-text-muted">
             <div className="text-center">
               <div className="w-12 h-12 mx-auto mb-3 opacity-50">
                 {getPlatformIcon(platform.id)}
@@ -99,7 +100,16 @@ export const PlatformCard = ({
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="block p-1.5 rounded hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150 group"
+                className="block p-1.5 rounded transition-all duration-300 group hover:backdrop-blur-sm"
+                style={{
+                  background: "transparent",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--card-bg)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "transparent";
+                }}
               >
                 <div className="flex items-start space-x-1.5">
                   {/* 排名 */}
@@ -118,14 +128,23 @@ export const PlatformCard = ({
 
                   {/* 内容 */}
                   <div className="flex-1 min-w-0 flex items-center justify-between space-x-2">
-                    <h4 className="text-xs font-medium text-gray-900 dark:text-white whitespace-nowrap overflow-hidden text-ellipsis group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex-1">
+                    <h4
+                      className="text-xs font-medium cosmic-text-primary whitespace-nowrap overflow-hidden text-ellipsis transition-colors flex-1 group-hover:cosmic-glow"
+                      style={{ color: "var(--text-white)" }}
+                      onMouseEnter={(e) => {
+                        e.currentTarget.style.color = "var(--light-purple)";
+                      }}
+                      onMouseLeave={(e) => {
+                        e.currentTarget.style.color = "var(--text-white)";
+                      }}
+                    >
                       {item.title}
                     </h4>
 
                     {/* 热度 */}
                     {item.extra && (
                       <div className="flex items-center space-x-1 flex-shrink-0">
-                        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center text-xs cosmic-text-muted">
                           {/* <TrendingUp className="w-2 h-2 mr-0.5" /> */}
                           <span className="text-xs">
                             {item.extra || formatHotScore(item.hot)}

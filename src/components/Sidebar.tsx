@@ -8,11 +8,11 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { SearchBar } from "./SearchBar";
 import { ThemeToggle } from "./ThemeToggle";
 import { DataSourceStatus } from "./DataSourceStatus";
 import { useThemeStore } from "../stores/themeStore";
 import { cn } from "../lib/utils";
+import Logo from "/logo.jpg";
 
 interface SidebarProps {
   isOpen: boolean;
@@ -64,7 +64,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* 侧边栏 */}
       <div
         className={cn(
-          "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out flex-shrink-0",
+          "cosmic-sidebar transition-all duration-300 ease-in-out flex-shrink-0",
           // 移动端：固定定位，可滑动显示/隐藏
           "fixed left-0 top-0 h-full z-50 transform w-80",
           isOpen ? "translate-x-0" : "-translate-x-full",
@@ -77,9 +77,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* 头部 */}
           <div
             className={cn(
-              "border-b border-gray-200 dark:border-gray-700",
+              "border-b",
+              "border-purple-500/30",
               isCollapsed ? "p-3" : "p-6"
             )}
+            style={{ borderColor: "var(--border-color)" }}
           >
             <div className="flex items-center justify-between">
               <div
@@ -88,15 +90,16 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   isCollapsed ? "justify-center w-full" : "space-x-3"
                 )}
               >
-                <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
+                {/* <div className="w-10 h-10 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center">
                   <TrendingUp className="w-6 h-6 text-white" />
-                </div>
+                </div> */}
+                <img src={Logo} alt="Logo" className="w-10 h-10 rounded-lg" />
                 {!isCollapsed && (
                   <div>
-                    <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+                    <h1 className="text-xl font-bold cosmic-title animate-star-glow">
                       {isStealthMode ? "Excel Dashboard" : "mo契摸鱼热榜"}
                     </h1>
-                    <p className="text-sm text-gray-500 dark:text-gray-400">
+                    <p className="text-sm cosmic-text-secondary">
                       {isStealthMode ? "Data Analytics" : "多平台热榜聚合"}
                     </p>
                   </div>
@@ -107,17 +110,41 @@ export const Sidebar: React.FC<SidebarProps> = ({
               {!isCollapsed && (
                 <button
                   onClick={onToggleCollapse}
-                  className="hidden lg:block p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                  className="hidden lg:block p-2 rounded-lg transition-all duration-300"
+                  style={{
+                    background: "var(--card-bg)",
+                    color: "var(--text-gray)",
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = "var(--card-bg-hover)";
+                    e.currentTarget.style.color = "var(--text-white)";
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = "var(--card-bg)";
+                    e.currentTarget.style.color = "var(--text-gray)";
+                  }}
                   title="收起侧边栏"
                 >
-                  <ChevronLeft className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                  <ChevronLeft className="w-5 h-5" />
                 </button>
               )}
 
               {/* 移动端关闭按钮 */}
               <button
                 onClick={onClose}
-                className="lg:hidden p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                className="lg:hidden p-2 rounded-lg transition-all duration-300"
+                style={{
+                  background: "var(--card-bg)",
+                  color: "var(--text-gray)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--card-bg-hover)";
+                  e.currentTarget.style.color = "var(--text-white)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "var(--card-bg)";
+                  e.currentTarget.style.color = "var(--text-gray)";
+                }}
               >
                 <svg
                   className="w-5 h-5"
@@ -137,11 +164,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
           </div>
 
           {/* 搜索栏 */}
-          {!isCollapsed && (
+          {/* {!isCollapsed && (
             <div className="p-4 border-b border-gray-200 dark:border-gray-700">
               <SearchBar />
             </div>
-          )}
+          )} */}
 
           {/* 导航菜单 */}
           <nav className={cn("flex-1 space-y-2", isCollapsed ? "p-2" : "p-4")}>
@@ -155,26 +182,24 @@ export const Sidebar: React.FC<SidebarProps> = ({
                   to={item.path}
                   onClick={onClose}
                   className={cn(
-                    "flex items-center rounded-lg transition-colors",
+                    "cosmic-nav-item rounded-lg",
                     isCollapsed ? "p-2 justify-center" : "space-x-3 p-3",
-                    isActive
-                      ? "bg-blue-50 dark:bg-blue-900/20 text-blue-600 dark:text-blue-400"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800"
+                    isActive && "active"
                   )}
                   title={isCollapsed ? item.label : undefined}
                 >
                   <Icon
                     className={cn(
-                      "w-5 h-5",
-                      isActive
-                        ? "text-blue-600 dark:text-blue-400"
-                        : "text-gray-500 dark:text-gray-400"
+                      "w-5 h-5 cosmic-glow",
+                      isActive ? "text-current" : "text-current"
                     )}
                   />
                   {!isCollapsed && (
                     <div className="flex-1">
-                      <div className="font-medium">{item.label}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">
+                      <div className="font-medium cosmic-text-primary">
+                        {item.label}
+                      </div>
+                      <div className="text-xs cosmic-text-muted">
                         {item.description}
                       </div>
                     </div>
@@ -187,18 +212,31 @@ export const Sidebar: React.FC<SidebarProps> = ({
           {/* 底部控制区 */}
           <div
             className={cn(
-              "border-t border-gray-200 dark:border-gray-700",
+              "border-t",
               isCollapsed ? "p-2 space-y-2" : "p-4 space-y-4"
             )}
+            style={{ borderColor: "var(--border-color)" }}
           >
             {/* 收起状态下的展开按钮 */}
             {isCollapsed && (
               <button
                 onClick={onToggleCollapse}
-                className="w-full p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 flex items-center justify-center"
+                className="w-full p-2 rounded-lg flex items-center justify-center transition-all duration-300"
+                style={{
+                  background: "var(--card-bg)",
+                  color: "var(--text-gray)",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = "var(--card-bg-hover)";
+                  e.currentTarget.style.color = "var(--text-white)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = "var(--card-bg)";
+                  e.currentTarget.style.color = "var(--text-gray)";
+                }}
                 title="展开侧边栏"
               >
-                <ChevronRight className="w-5 h-5 text-gray-600 dark:text-gray-400" />
+                <ChevronRight className="w-5 h-5" />
               </button>
             )}
 
@@ -214,8 +252,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
             >
               {!isCollapsed && (
                 <div className="flex items-center space-x-2">
-                  <Settings className="w-4 h-4 text-gray-500 dark:text-gray-400" />
-                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                  <Settings
+                    className="w-4 h-4 cosmic-glow"
+                    style={{ color: "var(--text-gray)" }}
+                  />
+                  <span className="text-sm font-medium cosmic-text-secondary">
                     主题设置
                   </span>
                 </div>
@@ -225,7 +266,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
             {/* 版本信息 */}
             {!isCollapsed && (
-              <div className="text-xs text-gray-500 dark:text-gray-400 text-center">
+              <div className="text-xs cosmic-text-muted text-center">
                 v1.0.0 · 实时更新
               </div>
             )}
