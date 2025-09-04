@@ -1,5 +1,5 @@
 import React from "react";
-import { AlertCircle, Wifi, WifiOff } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 import { useHotlist } from "../hooks/useHotlist";
 import { cn } from "../lib/utils";
 
@@ -10,9 +10,9 @@ interface DataSourceStatusProps {
 export const DataSourceStatus: React.FC<DataSourceStatusProps> = ({
   className,
 }) => {
-  const { source, apiError, timestamp } = useHotlist();
+  const { apiError, timestamp } = useHotlist();
 
-  const isRealData = source === "real";
+  const isRealData = true;
   const lastUpdateTime = timestamp
     ? new Date(timestamp).toLocaleTimeString()
     : "";
