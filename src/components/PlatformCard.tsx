@@ -1,4 +1,4 @@
-import { ExternalLink, TrendingUp } from "lucide-react";
+import { TrendingUp } from "lucide-react";
 import { HotlistItem, Platform } from "../types";
 import { formatHotScore } from "../lib/api";
 import { cn } from "../lib/utils";
@@ -105,16 +105,18 @@ export const PlatformCard = ({ platform, items }: PlatformCardProps) => {
                     </h4>
 
                     {/* 热度 */}
-                    {/* <div className="flex items-center space-x-1 flex-shrink-0">
-                      <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
-                        <TrendingUp className="w-2 h-2 mr-0.5" />
-                        <span className="text-xs">
-                          {formatHotScore(item.hot)}
-                        </span>
-                      </div>
+                    {item.extra && (
+                      <div className="flex items-center space-x-1 flex-shrink-0">
+                        <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
+                          {/* <TrendingUp className="w-2 h-2 mr-0.5" /> */}
+                          <span className="text-xs">
+                            {item.extra || formatHotScore(item.hot)}
+                          </span>
+                        </div>
 
-                      <ExternalLink className="w-2 h-2 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div> */}
+                        {/* <ExternalLink className="w-2 h-2 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" /> */}
+                      </div>
+                    )}
                   </div>
                 </div>
               </a>

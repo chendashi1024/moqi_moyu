@@ -158,6 +158,7 @@ export class MomoyuApiService {
             title: item.title,
             url: item.link,
             hot: hotValue,
+            extra: item.extra, // 保留原始热度显示文本
             platform: platformId,
             platformName: platformName,
           });

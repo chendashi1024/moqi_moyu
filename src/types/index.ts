@@ -47,6 +47,7 @@ export interface HotlistItem {
   title: string;
   url: string;
   hot: number;
+  extra?: string; // 热度显示文本，如 "2105 万"
   platform: string;
   platformName: string;
 }
