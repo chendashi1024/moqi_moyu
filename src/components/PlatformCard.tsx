@@ -76,7 +76,7 @@ export const PlatformCard = ({
                 <Maximize2 className="w-3 h-3 text-gray-500 dark:text-gray-400" />
               </button>
             )}
-            <div className="text-xs cosmic-text-muted">实时</div>
+            {/* <div className="text-xs cosmic-text-muted">实时</div> */}
           </div>
         </div>
       </div>

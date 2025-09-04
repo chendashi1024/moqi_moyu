@@ -65,7 +65,7 @@ export const Navigation = ({ className }: NavigationProps) => {
                   </span>
                 </div>
                 <span className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                  {isStealthMode ? "WorkSpace" : "mo契摸鱼热榜"}
+                  {isStealthMode ? "WorkSpace" : "mo契摸鱼吧"}
                 </span>
               </Link>
             </div>

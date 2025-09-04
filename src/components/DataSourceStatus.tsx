@@ -13,9 +13,7 @@ export const DataSourceStatus: React.FC<DataSourceStatusProps> = ({
   const { apiError, timestamp } = useHotlist();
 
   const isRealData = true;
-  const lastUpdateTime = timestamp
-    ? new Date(timestamp).toLocaleTimeString()
-    : "";
+  const lastUpdateTime = timestamp ? new Date().toLocaleTimeString() : "";
 
   return (
     <div
@@ -48,9 +46,7 @@ export const DataSourceStatus: React.FC<DataSourceStatusProps> = ({
 
       {lastUpdateTime && <span className="opacity-75">·</span>}
 
-      {lastUpdateTime && (
-        <span className="opacity-75">更新时间：{lastUpdateTime}</span>
-      )}
+      <span className="opacity-75">更新时间：{lastUpdateTime}</span>
 
       {apiError && (
         <>
