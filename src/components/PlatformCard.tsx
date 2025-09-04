@@ -1,4 +1,4 @@
-import { ExternalLink, TrendingUp, MoreHorizontal } from "lucide-react";
+import { ExternalLink, TrendingUp } from "lucide-react";
 import { HotlistItem, Platform } from "../types";
 import { formatHotScore } from "../lib/api";
 import { cn } from "../lib/utils";
@@ -10,25 +10,7 @@ interface PlatformCardProps {
   maxItems?: number;
 }
 
-export const PlatformCard = ({
-  platform,
-  items,
-  className,
-  maxItems = 50,
-}: PlatformCardProps) => {
-  const displayItems = items.slice(0, maxItems);
-  const hasMoreItems = items.length > maxItems;
-
-  const handleItemClick = (item: HotlistItem) => {
-    window.open(item.url, "_blank", "noopener,noreferrer");
-  };
-
-  const getRankColor = (rank: number) => {
-    if (rank <= 3) return "text-red-500 font-bold";
-    if (rank <= 10) return "text-orange-500 font-semibold";
-    return "text-gray-500";
-  };
-
+export const PlatformCard = ({ platform, items }: PlatformCardProps) => {
   const getPlatformIcon = (platformId: string) => {
     const iconMap: Record<string, string> = {
       zhihu: "知",
@@ -41,7 +23,7 @@ export const PlatformCard = ({
 
     return (
       <div
-        className="w-8 h-8 rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm"
+        className="w-18 h-18 rounded-lg flex items-center justify-center text-white text-sm font-bold shadow-sm"
         style={{ backgroundColor: platform.color }}
       >
         {iconMap[platformId] || platform.name.charAt(0)}
@@ -50,7 +32,7 @@ export const PlatformCard = ({
   };
 
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col h-full max-h-[calc(33vh-2rem)]">
+    <div className="bg-white dark:bg-gray-800 mb-5 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden hover:shadow-md transition-shadow duration-200 flex flex-col h-[400px]">
       {/* 平台头部 */}
       <div
         className="p-2 border-b border-gray-200 dark:border-gray-700 flex-shrink-0"
@@ -117,13 +99,13 @@ export const PlatformCard = ({
                   </div>
 
                   {/* 内容 */}
-                  <div className="flex-1 min-w-0">
-                    <h4 className="text-xs font-medium text-gray-900 dark:text-white line-clamp-1 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors leading-tight">
+                  <div className="flex-1 min-w-0 flex items-center justify-between space-x-2">
+                    <h4 className="text-xs font-medium text-gray-900 dark:text-white whitespace-nowrap overflow-hidden text-ellipsis group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex-1">
                       {item.title}
                     </h4>
 
                     {/* 热度 */}
-                    <div className="flex items-center space-x-1">
+                    {/* <div className="flex items-center space-x-1 flex-shrink-0">
                       <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
                         <TrendingUp className="w-2 h-2 mr-0.5" />
                         <span className="text-xs">
@@ -132,7 +114,7 @@ export const PlatformCard = ({
                       </div>
 
                       <ExternalLink className="w-2 h-2 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </a>
@@ -147,7 +129,7 @@ export const PlatformCard = ({
 // 平台卡片骨架屏
 export const PlatformCardSkeleton = () => {
   return (
-    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 animate-pulse h-full max-h-[calc(25vh-2rem)] flex flex-col">
+    <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 animate-pulse h-[400px] flex flex-col">
       {/* 头部骨架 */}
       <div className="p-2 border-b border-gray-100 dark:border-gray-700 flex-shrink-0">
         <div className="flex items-center space-x-1.5">

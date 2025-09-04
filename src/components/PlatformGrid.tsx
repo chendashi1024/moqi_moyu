@@ -56,10 +56,10 @@ export const PlatformGrid = ({
   // 加载状态
   if (isLoading) {
     return (
-      <div className="h-full p-2">
+      <div className="p-2">
         <div
           className={cn(
-            "grid gap-2 h-full",
+            "grid gap-2",
             "grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6",
             className
           )}
@@ -109,10 +109,10 @@ export const PlatformGrid = ({
 
   // 正常状态
   return (
-    <div className="h-full p-2">
+    <div className="p-2">
       <div
         className={cn(
-          "grid gap-2 h-full",
+          "grid gap-2",
           "grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6",
           className
         )}

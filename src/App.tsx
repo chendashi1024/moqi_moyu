@@ -19,7 +19,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
-        <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
+        <div className="h-screen bg-gray-50 dark:bg-gray-900 flex overflow-hidden">
           {/* 侧边栏 */}
           <Sidebar
             isOpen={sidebarOpen}
@@ -29,9 +29,9 @@ function App() {
           />
 
           {/* 主体内容区域 */}
-          <div className="flex-1 flex flex-col lg:ml-0">
+          <div className="flex-1 flex flex-col min-w-0 h-full">
             {/* 移动端顶部栏 */}
-            <div className="lg:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 p-4">
+            <div className="lg:hidden bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 p-4 flex-shrink-0">
               <button
                 onClick={() => setSidebarOpen(true)}
                 className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
@@ -41,13 +41,8 @@ function App() {
             </div>
 
             {/* 主要内容 */}
-            <main className="flex-1 overflow-auto">
-              <div
-                className={cn(
-                  "h-full transition-all duration-300 ease-in-out",
-                  sidebarCollapsed ? "p-4 lg:p-6" : "p-4 lg:p-6"
-                )}
-              >
+            <main className="flex-1 overflow-y-auto overflow-x-hidden">
+              <div className="p-4 lg:p-6">
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/subscription" element={<Subscription />} />
@@ -58,7 +53,7 @@ function App() {
           </div>
         </div>
       </Router>
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   );
 }

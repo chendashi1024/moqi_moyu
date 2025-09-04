@@ -64,12 +64,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
       {/* 侧边栏 */}
       <div
         className={cn(
-          "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out",
+          "bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 transition-all duration-300 ease-in-out flex-shrink-0",
           // 移动端：固定定位，可滑动显示/隐藏
           "fixed left-0 top-0 h-full z-50 transform w-80",
           isOpen ? "translate-x-0" : "-translate-x-full",
-          // 桌面端：静态定位，可收起/展开
-          "lg:static lg:translate-x-0 lg:z-auto lg:h-screen",
+          // 桌面端：静态定位，固定高度，可收起/展开
+          "lg:static lg:translate-x-0 lg:z-auto lg:h-screen lg:overflow-hidden",
           isCollapsed ? "lg:w-16" : "lg:w-80"
         )}
       >

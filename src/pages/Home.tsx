@@ -27,7 +27,7 @@ export const Home: React.FC = () => {
 
   if (isLoading) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
           <p className="mt-4 text-gray-600 dark:text-gray-400">
@@ -40,7 +40,7 @@ export const Home: React.FC = () => {
 
   if (error) {
     return (
-      <div className="h-full flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <div className="text-red-500 mb-4">
             <svg
@@ -75,10 +75,10 @@ export const Home: React.FC = () => {
   }
 
   return (
-    <div className="h-full flex flex-col overflow-hidden">
+    <div>
       {/* 页面标题 - 仅在有搜索结果时显示 */}
       {searchQuery && (
-        <div className="px-4 py-3 border-b border-gray-200 dark:border-gray-700 flex-shrink-0">
+        <div className="mb-6">
           <h2 className="text-lg font-semibold text-gray-900 dark:text-white">
             搜索结果: "{searchQuery}"
           </h2>
@@ -89,13 +89,11 @@ export const Home: React.FC = () => {
       )}
 
       {/* 热榜网格 */}
-      <div className="flex-1 overflow-hidden">
-        <PlatformGrid
-          items={filteredData}
-          isLoading={isLoading}
-          error={error?.message || null}
-        />
-      </div>
+      <PlatformGrid
+        items={filteredData}
+        isLoading={isLoading}
+        error={error?.message || null}
+      />
     </div>
   );
 };
