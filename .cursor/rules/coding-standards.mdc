@@ -1,0 +1,77 @@
+---
+globs: "*.ts,*.tsx,*.js,*.jsx"
+description: "代码风格和编程标准"
+---
+
+# 代码风格和编程标准
+
+## 基本代码规范
+
+### 命名约定
+
+- **文件命名**: 使用 PascalCase 命名组件文件，camelCase 命名工具文件
+  - 组件: `HotlistCard.tsx`, `SearchBar.tsx`
+  - 工具/hooks: `useTheme.ts`, `api.ts`, `utils.ts`
+- **变量命名**: camelCase (如: `isLoading`, `selectedPlatforms`)
+- **常量命名**: UPPER_SNAKE_CASE (如: `API_BASE_URL`, `PLATFORMS`)
+- **接口命名**: PascalCase，可以使用 I 前缀 (如: `HotlistItem`, `ApiResponse`)
+
+### 导入顺序
+
+遵循以下导入顺序，组之间用空行分隔：
+
+```typescript
+// 1. React相关
+import React, { useState, useEffect } from "react";
+
+// 2. 第三方库
+import { clsx } from "clsx";
+import { Link } from "react-router-dom";
+
+// 3. 内部组件
+import { SearchBar } from "./SearchBar";
+import { ThemeToggle } from "./ThemeToggle";
+
+// 4. Hooks和工具
+import { useTheme } from "../hooks/useTheme";
+import { cn } from "../lib/utils";
+
+// 5. 类型定义
+import { HotlistItem, Platform } from "../types";
+```
+
+### 函数和组件规范
+
+- **函数式组件**: 优先使用函数式组件和 React Hooks
+- **组件导出**: 使用命名导出而非默认导出（除 App.tsx 外）
+
+```typescript
+// ✅ 推荐
+export const HotlistCard: React.FC<Props> = ({ title, url }) => {
+  // ...
+};
+
+// ❌ 避免
+export default function HotlistCard({ title, url }: Props) {
+  // ...
+}
+```
+
+### TypeScript 规范
+
+- **类型定义**: 所有函数参数和返回值必须有明确类型
+- **接口优先**: 优先使用 interface 而非 type（除联合类型外）
+- **严格类型**: 避免使用 any，优先使用 unknown 或具体类型
+- **可选属性**: 合理使用可选属性标记`?`
+
+### 中文注释和字符串
+
+- **注释**: 使用中文注释说明复杂业务逻辑
+- **用户界面**: 所有用户可见文本使用中文
+- **错误处理**: 错误信息提供中文说明
+
+### 代码组织
+
+- **函数长度**: 单个函数不超过 50 行，组件不超过 200 行
+- **文件长度**: 单个文件不超过 500 行，超过则拆分
+- **职责单一**: 每个组件和函数只负责一个明确功能

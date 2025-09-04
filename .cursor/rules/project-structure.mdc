@@ -1,0 +1,53 @@
+---
+alwaysApply: true
+description: "moqi_moyu项目结构和架构规范"
+---
+
+# moqi_moyu 项目结构和架构规范
+
+## 项目概览
+
+这是一个基于 React + TypeScript + Vite 的热榜聚合应用，使用 Tailwind CSS 和现代前端技术栈。
+
+## 文件结构规范
+
+### 核心目录结构
+
+```
+src/
+├── components/          # 可复用UI组件
+├── pages/              # 路由页面组件
+├── hooks/              # 自定义React hooks
+├── stores/             # Zustand状态管理
+├── lib/                # 工具库和配置
+├── types/              # TypeScript类型定义
+└── assets/             # 静态资源
+```
+
+### 关键文件说明
+
+- **入口点**: [src/main.tsx](mdc:src/main.tsx) - 应用程序入口
+- **路由配置**: [src/App.tsx](mdc:src/App.tsx) - 主应用组件和路由设置
+- **类型定义**: [src/types/index.ts](mdc:src/types/index.ts) - 全局类型声明
+- **工具函数**: [src/lib/utils.ts](mdc:src/lib/utils.ts) - 通用工具函数
+- **API 配置**: [src/lib/api.ts](mdc:src/lib/api.ts) - API 接口和数据获取
+- **状态管理**: [src/stores/appStore.ts](mdc:src/stores/appStore.ts) - 应用全局状态
+
+## 技术栈
+
+- **前端框架**: React 18 + TypeScript
+- **构建工具**: Vite
+- **样式**: Tailwind CSS + CSS 变量
+- **状态管理**: Zustand (带持久化)
+- **数据获取**: TanStack Query (React Query)
+- **路由**: React Router v7
+- **图标**: Lucide React
+- **后端**: Supabase (数据库和认证)
+
+## 架构模式
+
+- **组件架构**: 函数式组件 + React Hooks
+- **状态管理**: Zustand stores + React Query 缓存
+- **样式架构**: Tailwind utility-first + 组件级样式
+- **类型安全**: 严格 TypeScript 配置
+- **数据流**: API → React Query → Zustand → Components

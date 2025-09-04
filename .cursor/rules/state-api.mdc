@@ -1,0 +1,235 @@
+---
+description: "状态管理和API数据获取规范"
+---
+
+# 状态管理和 API 数据获取规范
+
+## Zustand 状态管理
+
+### Store 结构规范
+
+参考 [src/stores/appStore.ts](mdc:src/stores/appStore.ts) 的模式：
+
+```typescript
+// ✅ 标准Store结构
+interface StoreState {
+  // 数据状态
+  items: Item[];
+  isLoading: boolean;
+  error: string | null;
+
+  // UI状态
+  selectedItems: string[];
+  searchQuery: string;
+
+  // Actions（动词命名）
+  setItems: (items: Item[]) => void;
+  setLoading: (loading: boolean) => void;
+  setError: (error: string | null) => void;
+
+  // 计算方法（get前缀）
+  getFilteredItems: () => Item[];
+
+  // 操作方法
+  toggleItem: (id: string) => void;
+  reset: () => void;
+}
+```
+
+### Zustand 最佳实践
+
+- **持久化**: 使用 persist middleware 保存重要状态
+- **状态分离**: 将主题、用户等独立状态拆分到单独 store
+- **类型安全**: 为所有 store 提供完整类型定义
+- **初始状态**: 定义清晰的初始状态对象
+
+```typescript
+// ✅ 推荐的store创建模式
+export const useAppStore = create<AppState>()(
+  persist(
+    (set, get) => ({
+      // 初始状态
+      ...initialState,
+
+      // Actions
+      setItems: (items) => set({ items, lastUpdated: new Date() }),
+
+      getFilteredItems: () => {
+        const { items, searchQuery } = get();
+        return items.filter((item) =>
+          item.title.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+      },
+    }),
+    {
+      name: "app-storage",
+      partialize: (state) => ({
+        // 只持久化必要字段
+        selectedPlatforms: state.selectedPlatforms,
+        searchQuery: state.searchQuery,
+      }),
+    }
+  )
+);
+```
+
+## TanStack Query (React Query)
+
+### 查询模式
+
+参考 [src/hooks/useHotlist.ts](mdc:src/hooks/useHotlist.ts) 和 [src/lib/queryClient.ts](mdc:src/lib/queryClient.ts)：
+
+```typescript
+// ✅ 标准查询hook
+export const useHotlist = () => {
+  return useQuery({
+    queryKey: ["hotlist"],
+    queryFn: fetchHotlist,
+    staleTime: 5 * 60 * 1000, // 5分钟
+    cacheTime: 10 * 60 * 1000, // 10分钟
+    retry: 3,
+    retryDelay: (attemptIndex) => Math.min(1000 * 2 ** attemptIndex, 30000),
+  });
+};
+
+// ✅ 带参数的查询
+export const usePlatformData = (platformId: string) => {
+  return useQuery({
+    queryKey: ["platform", platformId],
+    queryFn: () => fetchPlatformData(platformId),
+    enabled: !!platformId, // 仅在有platformId时执行
+  });
+};
+```
+
+### 查询配置规范
+
+- **queryKey**: 使用数组格式，包含所有影响查询的参数
+- **缓存时间**: 根据数据更新频率设置合适的 staleTime 和 cacheTime
+- **错误处理**: 统一的错误处理和重试策略
+- **启用条件**: 使用 enabled 控制查询时机
+
+### Mutation 模式
+
+```typescript
+// ✅ 标准mutation
+export const useCreateItem = () => {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: createItem,
+    onSuccess: () => {
+      // 使相关查询失效
+      queryClient.invalidateQueries({ queryKey: ["items"] });
+    },
+    onError: (error) => {
+      console.error("创建失败:", error);
+      // 统一错误处理
+    },
+  });
+};
+```
+
+## API 设计规范
+
+### API 函数结构
+
+参考 [src/lib/api.ts](mdc:src/lib/api.ts) 的模式：
+
+```typescript
+// ✅ 标准API函数
+export const fetchHotlist = async (): Promise<ApiResponse> => {
+  try {
+    const response = await fetch(API_ENDPOINTS.hotlist);
+
+    if (!response.ok) {
+      throw new Error(`API错误: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return {
+      data: transformData(data),
+      source: "real",
+      timestamp: Date.now(),
+    };
+  } catch (error) {
+    console.error("获取热榜数据失败:", error);
+
+    // 降级到mock数据
+    return {
+      data: MOCK_DATA,
+      source: "mock",
+      timestamp: Date.now(),
+      error: error.message,
+    };
+  }
+};
+```
+
+### 错误处理策略
+
+- **网络错误**: 自动降级到 mock 数据
+- **超时处理**: 设置合理的超时时间
+- **重试机制**: 对临时错误进行重试
+- **用户反馈**: 提供清晰的错误信息
+
+### 数据转换
+
+```typescript
+// ✅ 统一的数据转换函数
+const transformMomoyuData = (data: MomoyuApiResponse): HotlistItem[] => {
+  return data.data.flatMap((platform) =>
+    platform.data.map((item) => ({
+      id: `${platform.source_key}-${item.id}`,
+      title: item.title,
+      url: item.link,
+      hot: parseHotValue(item.extra),
+      platform: platform.source_key,
+      platformName: platform.name,
+    }))
+  );
+};
+```
+
+## 状态同步模式
+
+### Store 与 Query 结合
+
+```typescript
+// ✅ 推荐的状态同步模式
+const { data, isLoading, error } = useHotlist();
+const { setHotlistItems, setLoading, setError } = useAppStore();
+
+useEffect(() => {
+  setLoading(isLoading);
+  if (data) setHotlistItems(data);
+  if (error) setError(error.message);
+}, [data, isLoading, error]);
+```
+
+### 乐观更新
+
+```typescript
+// ✅ 乐观更新模式
+const updateItem = useMutation({
+  mutationFn: updateItemApi,
+  onMutate: async (newItem) => {
+    // 取消相关查询
+    await queryClient.cancelQueries({ queryKey: ["items"] });
+
+    // 保存previous值
+    const previousItems = queryClient.getQueryData(["items"]);
+
+    // 乐观更新
+    queryClient.setQueryData(["items"], (old) =>
+      old.map((item) => (item.id === newItem.id ? newItem : item))
+    );
+
+    return { previousItems };
+  },
+  onError: (err, newItem, context) => {
+    // 回滚
+    queryClient.setQueryData(["items"], context?.previousItems);
+  },
+});
+```

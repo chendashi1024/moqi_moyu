@@ -1,0 +1,212 @@
+---
+globs: "*.tsx,*.ts"
+description: "React和TypeScript开发规范"
+---
+
+# React 和 TypeScript 开发规范
+
+## React 组件规范
+
+### 组件定义
+
+```typescript
+// ✅ 推荐的组件结构
+interface ComponentProps {
+  title: string
+  isLoading?: boolean
+  onClick?: () => void
+}
+
+export const MyComponent: React.FC<ComponentProps> = ({
+  title,
+  isLoading = false,
+  onClick
+}) => {
+  // hooks在组件顶部
+  const [state, setState] = useState<string>('')
+  const { data, error } = useQuery(...)
+
+  // 事件处理函数
+  const handleClick = () => {
+    onClick?.()
+  }
+
+  // 条件渲染
+  if (isLoading) {
+    return <div>加载中...</div>
+  }
+
+  if (error) {
+    return <div>错误: {error.message}</div>
+  }
+
+  return (
+    <div className="...">
+      {/* JSX内容 */}
+    </div>
+  )
+}
+```
+
+### Hooks 使用规范
+
+- **useState**: 为复杂状态使用具体类型
+
+```typescript
+// ✅ 明确类型
+const [user, setUser] = useState<User | null>(null);
+const [items, setItems] = useState<HotlistItem[]>([]);
+
+// ❌ 避免
+const [data, setData] = useState<any>(null);
+```
+
+- **useEffect**: 明确依赖数组，添加清理函数
+
+```typescript
+// ✅ 正确的effect使用
+useEffect(() => {
+  const subscription = api.subscribe(callback);
+
+  return () => {
+    subscription.unsubscribe();
+  };
+}, [callback]);
+```
+
+- **自定义 hooks**: 遵循 use 前缀，返回对象或数组
+
+```typescript
+// ✅ 自定义hook规范
+export const useHotlist = () => {
+  const [data, setData] = useState<HotlistItem[]>([])
+  const [loading, setLoading] = useState(false)
+
+  return { data, loading, refetch: () => {...} }
+}
+```
+
+### 性能优化
+
+- **React.memo**: 对纯展示组件使用 memo 优化
+- **useMemo/useCallback**: 对计算开销大的值和函数使用缓存
+- **key 属性**: 列表渲染必须提供稳定的 key
+
+## TypeScript 最佳实践
+
+### 类型定义策略
+
+```typescript
+// ✅ 业务类型定义
+interface HotlistItem {
+  id: string;
+  title: string;
+  url: string;
+  hot: number;
+  platform: string;
+  platformName: string;
+}
+
+// ✅ API响应类型
+interface ApiResponse<T = any> {
+  data: T;
+  source: "real" | "mock";
+  timestamp: number;
+  error?: string;
+}
+
+// ✅ 组件Props类型
+interface CardProps {
+  item: HotlistItem;
+  onClick?: (item: HotlistItem) => void;
+  className?: string;
+}
+```
+
+### 工具类型使用
+
+```typescript
+// ✅ 善用工具类型
+type HotlistItemKeys = keyof HotlistItem;
+type PartialUser = Partial<User>;
+type RequiredConfig = Required<Config>;
+type PlatformId = Pick<Platform, "id">;
+```
+
+### 错误处理类型
+
+```typescript
+// ✅ 明确的错误类型
+interface ApiError {
+  message: string;
+  code?: string;
+  details?: Record<string, any>;
+}
+
+// ✅ 结果类型
+type Result<T, E = ApiError> =
+  | { success: true; data: T }
+  | { success: false; error: E };
+```
+
+## 特定模式
+
+### 条件渲染
+
+```typescript
+// ✅ 推荐模式
+{
+  isLoading ? (
+    <LoadingSpinner />
+  ) : error ? (
+    <ErrorMessage error={error} />
+  ) : (
+    <DataDisplay data={data} />
+  );
+}
+
+// ✅ 简单条件
+{
+  user && <UserProfile user={user} />;
+}
+```
+
+### 列表渲染
+
+```typescript
+// ✅ 标准列表渲染
+{
+  items.map((item) => (
+    <HotlistCard key={item.id} item={item} onClick={handleItemClick} />
+  ));
+}
+```
+
+### 表单处理
+
+```typescript
+// ✅ 表单state类型化
+interface FormData {
+  email: string;
+  password: string;
+}
+
+const [formData, setFormData] = useState<FormData>({
+  email: "",
+  password: "",
+});
+
+const handleSubmit = (e: React.FormEvent) => {
+  e.preventDefault();
+  // 处理提交
+};
+```
+
+## 参考实现
+
+参考项目中的优秀实现模式：
+
+- 状态管理: [src/stores/appStore.ts](mdc:src/stores/appStore.ts)
+- 组件模式: [src/components/Sidebar.tsx](mdc:src/components/Sidebar.tsx)
+- Hooks 使用: [src/hooks/useTheme.ts](mdc:src/hooks/useTheme.ts)
+- 类型定义: [src/types/index.ts](mdc:src/types/index.ts)

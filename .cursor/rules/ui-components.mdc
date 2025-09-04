@@ -1,0 +1,316 @@
+---
+globs: "*.tsx,*.css"
+description: "UI组件和样式开发规范"
+---
+
+# UI 组件和样式开发规范
+
+## Tailwind CSS 使用规范
+
+### 工具函数
+
+使用 [src/lib/utils.ts](mdc:src/lib/utils.ts) 中的 `cn` 函数合并类名：
+
+```typescript
+import { cn } from "../lib/utils";
+
+// ✅ 推荐的类名合并
+<div
+  className={cn(
+    "base-classes",
+    isActive && "active-classes",
+    className // 允许外部覆盖
+  )}
+/>;
+```
+
+### 样式组织
+
+```typescript
+// ✅ 按功能分组的类名
+<button
+  className={cn(
+    // 布局
+    "flex items-center space-x-2 px-4 py-2",
+    // 外观
+    "bg-blue-500 text-white rounded-lg",
+    // 交互
+    "hover:bg-blue-600 active:scale-95",
+    // 状态
+    "disabled:opacity-50 disabled:cursor-not-allowed",
+    // 响应式
+    "sm:px-6 md:py-3",
+    // 自定义
+    className
+  )}
+/>
+```
+
+### 颜色系统
+
+遵循项目的色彩规范：
+
+- **主色**: blue 系列 (blue-500, blue-600 等)
+- **灰度**: gray 系列用于背景和文本
+- **状态色**: green(成功), red(错误), yellow(警告)
+- **暗色模式**: 使用 dark:前缀
+
+```typescript
+// ✅ 标准颜色应用
+<div className="bg-white dark:bg-gray-900 text-gray-900 dark:text-white" />
+<button className="bg-blue-500 hover:bg-blue-600 text-white" />
+```
+
+## 组件设计模式
+
+### 组件接口设计
+
+```typescript
+// ✅ 标准组件Props设计
+interface ComponentProps {
+  // 必需属性
+  title: string;
+
+  // 可选功能属性
+  onClick?: () => void;
+  isLoading?: boolean;
+
+  // 样式自定义
+  className?: string;
+  size?: "sm" | "md" | "lg";
+  variant?: "primary" | "secondary" | "outline";
+
+  // 子组件
+  children?: React.ReactNode;
+}
+```
+
+### 条件样式模式
+
+```typescript
+// ✅ 基于props的条件样式
+const getButtonStyles = (variant: string, size: string) =>
+  cn(
+    // 基础样式
+    "inline-flex items-center justify-center rounded-lg font-medium transition-colors",
+
+    // 变体样式
+    {
+      primary: "bg-blue-500 text-white hover:bg-blue-600",
+      secondary: "bg-gray-100 text-gray-900 hover:bg-gray-200",
+      outline: "border border-gray-300 bg-transparent hover:bg-gray-50",
+    }[variant],
+
+    // 尺寸样式
+    {
+      sm: "px-3 py-1.5 text-sm",
+      md: "px-4 py-2 text-base",
+      lg: "px-6 py-3 text-lg",
+    }[size]
+  );
+```
+
+### 组合模式
+
+参考 [src/components/HotlistGrid.tsx](mdc:src/components/HotlistGrid.tsx) 和相关组件：
+
+```typescript
+// ✅ 组件组合模式
+export const HotlistGrid = ({ items, className }) => (
+  <div className={cn("grid gap-4 sm:grid-cols-2 lg:grid-cols-3", className)}>
+    {items.map((item) => (
+      <HotlistCard key={item.id} item={item} />
+    ))}
+  </div>
+);
+
+export const HotlistCard = ({ item, onClick }) => (
+  <div className="group relative overflow-hidden rounded-lg border bg-white p-4 shadow-sm transition-shadow hover:shadow-md">
+    <PlatformCard platform={item.platform} />
+    <div className="mt-3">
+      <h3 className="font-medium text-gray-900 group-hover:text-blue-600">
+        {item.title}
+      </h3>
+      <p className="text-sm text-gray-500">{item.hot} 热度</p>
+    </div>
+  </div>
+);
+```
+
+## 响应式设计
+
+### 断点使用
+
+```typescript
+// ✅ 标准响应式类名
+<div
+  className={cn(
+    // 移动优先
+    "grid grid-cols-1 gap-4",
+    // 平板
+    "sm:grid-cols-2 sm:gap-6",
+    // 桌面
+    "lg:grid-cols-3 lg:gap-8",
+    // 大屏
+    "xl:grid-cols-4"
+  )}
+/>
+```
+
+### 移动端适配
+
+```typescript
+// ✅ 移动端友好的布局
+<div
+  className={cn(
+    "flex flex-col lg:flex-row",
+    "space-y-4 lg:space-y-0 lg:space-x-6",
+    "p-4 lg:p-6"
+  )}
+/>
+```
+
+## 交互状态
+
+### 按钮状态
+
+```typescript
+// ✅ 完整的按钮状态
+<button
+  className={cn(
+    "px-4 py-2 rounded-lg font-medium transition-all duration-200",
+    "bg-blue-500 text-white",
+    "hover:bg-blue-600 hover:scale-105",
+    "active:scale-95",
+    "focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2",
+    "disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none",
+    isLoading && "cursor-wait"
+  )}
+/>
+```
+
+### 悬停效果
+
+```typescript
+// ✅ 微妙的悬停动画
+<div
+  className={cn(
+    "group relative overflow-hidden",
+    "transition-transform duration-200 ease-out",
+    "hover:scale-105 hover:shadow-lg"
+  )}
+>
+  <div className="absolute inset-0 bg-gradient-to-r from-blue-600 to-purple-600 opacity-0 group-hover:opacity-10 transition-opacity" />
+</div>
+```
+
+## 加载状态
+
+### 加载组件
+
+```typescript
+// ✅ 统一的加载状态
+export const LoadingSpinner = ({ size = "md", className }) => (
+  <div
+    className={cn(
+      "animate-spin rounded-full border-2 border-gray-300 border-t-blue-600",
+      {
+        sm: "h-4 w-4",
+        md: "h-6 w-6",
+        lg: "h-8 w-8",
+      }[size],
+      className
+    )}
+  />
+);
+
+// ✅ 骨架屏
+export const SkeletonCard = () => (
+  <div className="animate-pulse p-4 border rounded-lg">
+    <div className="h-4 bg-gray-300 rounded w-3/4 mb-2" />
+    <div className="h-3 bg-gray-300 rounded w-1/2" />
+  </div>
+);
+```
+
+## 无障碍访问 (Accessibility)
+
+### 基本要求
+
+```typescript
+// ✅ 无障碍属性
+<button
+  aria-label="关闭对话框"
+  aria-pressed={isPressed}
+  tabIndex={0}
+  onKeyDown={(e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      handleClick()
+    }
+  }}
+>
+  <CloseIcon aria-hidden="true" />
+</button>
+
+// ✅ 表单标签
+<label htmlFor="search" className="sr-only">
+  搜索热榜内容
+</label>
+<input
+  id="search"
+  type="text"
+  placeholder="搜索..."
+  aria-describedby="search-help"
+/>
+```
+
+## 暗色模式
+
+### 主题适配
+
+```typescript
+// ✅ 暗色模式样式
+<div
+  className={cn(
+    // 背景
+    "bg-white dark:bg-gray-900",
+    // 文本
+    "text-gray-900 dark:text-white",
+    // 边框
+    "border-gray-200 dark:border-gray-700",
+    // 悬停
+    "hover:bg-gray-50 dark:hover:bg-gray-800"
+  )}
+/>
+```
+
+参考实现: [src/components/ThemeToggle.tsx](mdc:src/components/ThemeToggle.tsx) 和 [src/hooks/useTheme.ts](mdc:src/hooks/useTheme.ts)
+
+## 性能优化
+
+### 图片优化
+
+```typescript
+// ✅ 图片最佳实践
+<img
+  src={src}
+  alt={alt}
+  loading="lazy"
+  className="w-full h-auto"
+  onError={(e) => {
+    e.currentTarget.src = "/fallback-image.png";
+  }}
+/>
+```
+
+### 虚拟滚动
+
+对于长列表，考虑使用虚拟滚动或分页：
+
+```typescript
+// ✅ 分页加载
+const ITEMS_PER_PAGE = 20;
+const [visibleItems, setVisibleItems] = useState(
+  items.slice(0, ITEMS_PER_PAGE)
+);
+```
