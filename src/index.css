@@ -157,41 +157,79 @@
   }
 }
 
-/* 平台卡片网格优化 */
+/* 平台卡片网格优化 - 确保所有卡片在一个屏幕内显示 */
 .platform-grid {
   display: grid;
-  gap: 1rem;
+  gap: 0.5rem;
   height: 100%;
+  padding: 0.5rem;
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   .platform-grid {
     grid-template-columns: repeat(2, 1fr);
   }
 }
 
-@media (min-width: 1280px) {
+@media (min-width: 1024px) {
   .platform-grid {
     grid-template-columns: repeat(3, 1fr);
   }
 }
 
-@media (min-width: 1536px) {
+@media (min-width: 1280px) {
   .platform-grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }
 
-/* 平台卡片高度优化 */
-.platform-card {
-  height: calc(100vh - 12rem);
-  min-height: 500px;
-  max-height: 800px;
+@media (min-width: 1536px) {
+  .platform-grid {
+    grid-template-columns: repeat(6, 1fr);
+  }
 }
 
-@media (max-width: 768px) {
+/* 平台卡片高度优化 - 根据网格布局自动计算高度 */
+.platform-card {
+  height: calc(50vh - 2rem);
+  min-height: 200px;
+  max-height: calc(50vh - 1rem);
+}
+
+@media (min-width: 768px) {
   .platform-card {
-    height: 400px;
-    min-height: 350px;
+    height: calc(50vh - 1.5rem);
+    min-height: 250px;
+    max-height: calc(50vh - 1rem);
   }
+}
+
+@media (min-width: 1024px) {
+  .platform-card {
+    height: calc(33vh - 1rem);
+    min-height: 200px;
+    max-height: calc(33vh - 0.5rem);
+  }
+}
+
+@media (min-width: 1280px) {
+  .platform-card {
+    height: calc(25vh - 1rem);
+    min-height: 180px;
+    max-height: calc(25vh - 0.5rem);
+  }
+}
+
+@media (min-width: 1536px) {
+  .platform-card {
+    height: calc(16.66vh - 1rem);
+    min-height: 160px;
+    max-height: calc(16.66vh - 0.5rem);
+  }
+}
+
+/* 确保网格容器能完全适配视窗高度 */
+.main-content {
+  height: 100vh;
+  overflow: hidden;
 }

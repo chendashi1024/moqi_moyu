@@ -14,13 +14,19 @@ import { cn } from "./lib/utils";
 function App() {
   useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
     <QueryClientProvider client={queryClient}>
       <Router>
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex">
           {/* 侧边栏 */}
-          <Sidebar isOpen={sidebarOpen} onClose={() => setSidebarOpen(false)} />
+          <Sidebar
+            isOpen={sidebarOpen}
+            isCollapsed={sidebarCollapsed}
+            onClose={() => setSidebarOpen(false)}
+            onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+          />
 
           {/* 主体内容区域 */}
           <div className="flex-1 flex flex-col lg:ml-0">
@@ -36,7 +42,12 @@ function App() {
 
             {/* 主要内容 */}
             <main className="flex-1 overflow-auto">
-              <div className="h-full p-6">
+              <div
+                className={cn(
+                  "h-full transition-all duration-300 ease-in-out",
+                  sidebarCollapsed ? "p-4 lg:p-6" : "p-4 lg:p-6"
+                )}
+              >
                 <Routes>
                   <Route path="/" element={<Home />} />
                   <Route path="/subscription" element={<Subscription />} />
