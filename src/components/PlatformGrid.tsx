@@ -1,5 +1,5 @@
 import { useMemo } from "react";
-import { HotlistItem, Platform } from "../types";
+import { HotlistItem } from "../types";
 import { PlatformCard, PlatformCardSkeleton } from "./PlatformCard";
 import { PLATFORMS } from "../lib/api";
 import { cn } from "../lib/utils";
@@ -11,6 +11,7 @@ interface PlatformGridProps {
   className?: string;
   maxItemsPerPlatform?: number;
   selectedPlatforms?: string[];
+  onPlatformFullscreen?: (platformId: string) => void;
 }
 
 export const PlatformGrid = ({
@@ -19,7 +20,7 @@ export const PlatformGrid = ({
   error = null,
   className,
   maxItemsPerPlatform = 50,
-  selectedPlatforms = [],
+  onPlatformFullscreen,
 }: PlatformGridProps) => {
   // 按平台分组数据
   const platformData = useMemo(() => {
@@ -40,7 +41,7 @@ export const PlatformGrid = ({
     }
 
     // 按热度排序每个平台的数据
-    grouped.forEach((platformItems, platformId) => {
+    grouped.forEach((platformItems) => {
       platformItems.sort((a, b) => (b.hot || 0) - (a.hot || 0));
     });
 
@@ -125,6 +126,7 @@ export const PlatformGrid = ({
               platform={platform}
               items={platformItems}
               maxItems={maxItemsPerPlatform}
+              onFullscreen={() => onPlatformFullscreen?.(platform.id)}
             />
           );
         })}
