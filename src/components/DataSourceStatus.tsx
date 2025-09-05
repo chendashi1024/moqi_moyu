@@ -22,9 +22,9 @@ export const DataSourceStatus: React.FC<DataSourceStatusProps> = ({
         className
       )}
       style={{
-        background: isRealData
-          ? "rgba(34, 197, 94, 0.15)"
-          : "rgba(245, 158, 11, 0.15)",
+        // background: isRealData
+        //   ? "rgba(34, 197, 94, 0.15)"
+        //   : "rgba(245, 158, 11, 0.15)",
         color: isRealData ? "var(--light-purple)" : "var(--secondary-purple)",
         border: `1px solid ${
           isRealData ? "rgba(34, 197, 94, 0.3)" : "rgba(245, 158, 11, 0.3)"
