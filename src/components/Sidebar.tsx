@@ -37,6 +37,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: "热榜聚合",
       description: "实时热门内容",
     },
+    {
+      // path: "/excel",
+      icon: Bookmark,
+      label: "工资实时（开发中）",
+      // description: "Excel",
+    },
+    {
+      // path: "/excel",
+      icon: Clock,
+      label: "木鱼（开发中）",
+      // description: "Excel",
+    },
     // {
     //   path: "/subscription",
     //   icon: Bookmark,

@@ -14,7 +14,7 @@ import { cn } from "./lib/utils";
 function App() {
   useTheme();
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(true);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
     <QueryClientProvider client={queryClient}>

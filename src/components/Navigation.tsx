@@ -23,17 +23,27 @@ export const Navigation = ({ className }: NavigationProps) => {
       description: "热榜聚合",
     },
     {
-      path: "/subscription",
-      label: "我的订阅",
-      icon: User,
-      description: "订阅管理",
+      // path: "/excel",
+      // icon: Bookmark,
+      label: "工资实时(开发中)",
     },
     {
-      path: "/history",
-      label: "历史榜单",
-      icon: History,
-      description: "历史数据",
+      // path: "/excel",
+      // icon: Bookmark,
+      label: "工资实时(开发中)",
     },
+    // {
+    //   path: "/subscription",
+    //   label: "我的订阅",
+    //   icon: User,
+    //   description: "订阅管理",
+    // },
+    // {
+    //   path: "/history",
+    //   label: "历史榜单",
+    //   icon: History,
+    //   description: "历史数据",
+    // },
   ];
 
   const isActivePath = (path: string) => {
