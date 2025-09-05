@@ -37,18 +37,18 @@ export const Sidebar: React.FC<SidebarProps> = ({
       label: "热榜聚合",
       description: "实时热门内容",
     },
-    {
-      path: "/subscription",
-      icon: Bookmark,
-      label: "我的订阅",
-      description: "个性化设置",
-    },
-    {
-      path: "/history",
-      icon: Clock,
-      label: "历史榜单",
-      description: "往期热榜",
-    },
+    // {
+    //   path: "/subscription",
+    //   icon: Bookmark,
+    //   label: "我的订阅",
+    //   description: "个性化设置",
+    // },
+    // {
+    //   path: "/history",
+    //   icon: Clock,
+    //   label: "历史榜单",
+    //   description: "往期热榜",
+    // },
   ];
 
   return (
@@ -97,11 +97,11 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 {!isCollapsed && (
                   <div>
                     <h1 className="text-xl font-bold cosmic-title animate-star-glow">
-                      {isStealthMode ? "Excel Dashboard" : "mo契摸鱼热榜"}
+                      {isStealthMode ? "Excel Dashboard" : "mo契摸鱼吧"}
                     </h1>
-                    <p className="text-sm cosmic-text-secondary">
+                    {/* <p className="text-sm cosmic-text-secondary">
                       {isStealthMode ? "Data Analytics" : "多平台热榜聚合"}
-                    </p>
+                    </p> */}
                   </div>
                 )}
               </div>
@@ -244,7 +244,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             {!isCollapsed && <DataSourceStatus />}
 
             {/* 主题切换 */}
-            <div
+            {/* <div
               className={cn(
                 "flex items-center",
                 isCollapsed ? "justify-center" : "justify-between"
@@ -262,14 +262,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 </div>
               )}
               <ThemeToggle />
-            </div>
+            </div> */}
 
             {/* 版本信息 */}
-            {!isCollapsed && (
+            {/* {!isCollapsed && (
               <div className="text-xs cosmic-text-muted text-center">
                 v1.0.0 · 实时更新
               </div>
-            )}
+            )} */}
           </div>
         </div>
       </div>

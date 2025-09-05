@@ -1,81 +1,93 @@
-import { useState, useEffect } from 'react'
-import { Calendar, Clock, TrendingUp, AlertCircle } from 'lucide-react'
-import { ResponsiveGrid } from '../components/HotlistGrid'
-import { HotlistCard } from '../components/HotlistCard'
-import { cn } from '../lib/utils'
-import { HotlistItem } from '../types'
+import { useState, useEffect } from "react";
+import { Calendar, Clock, TrendingUp, AlertCircle } from "lucide-react";
+import { ResponsiveGrid } from "../components/HotlistGrid";
+import { HotlistCard } from "../components/HotlistCard";
+import { cn } from "../lib/utils";
+import { HotlistItem } from "../types";
 
 export const History = () => {
   const [selectedDate, setSelectedDate] = useState<string>(
-    new Date().toISOString().split('T')[0]
-  )
-  const [historyData, setHistoryData] = useState<HotlistItem[]>([])
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState<string | null>(null)
+    new Date().toISOString().split("T")[0]
+  );
+  const [historyData, setHistoryData] = useState<HotlistItem[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    document.title = '历史榜单 - mo契摸鱼热榜'
-  }, [])
+    document.title = "历史榜单 - mo契摸鱼吧";
+  }, []);
 
   // 模拟获取历史数据
   const fetchHistoryData = async (date: string) => {
-    setIsLoading(true)
-    setError(null)
-    
+    setIsLoading(true);
+    setError(null);
+
     try {
       // TODO: 实际应该从Supabase获取历史数据
       // 这里模拟API调用
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+
       // 模拟数据
       const mockData: HotlistItem[] = [
         {
           id: `history-1-${date}`,
           title: `${date} 的热门话题示例`,
-          url: 'https://example.com',
+          url: "https://example.com",
           hot: 12345,
-          platform: 'zhihu',
-          platformName: '知乎热榜'
+          platform: "zhihu",
+          platformName: "知乎热榜",
         },
         {
           id: `history-2-${date}`,
           title: `${date} 的另一个热门话题`,
-          url: 'https://example.com',
+          url: "https://example.com",
           hot: 9876,
-          platform: 'weibo',
-          platformName: '微博热搜'
-        }
-      ]
-      
-      setHistoryData(mockData)
+          platform: "weibo",
+          platformName: "微博热搜",
+        },
+      ];
+
+      setHistoryData(mockData);
     } catch (err) {
-      setError('获取历史数据失败，请稍后重试')
+      setError("获取历史数据失败，请稍后重试");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   useEffect(() => {
-    fetchHistoryData(selectedDate)
-  }, [selectedDate])
+    fetchHistoryData(selectedDate);
+  }, [selectedDate]);
 
   // 生成最近7天的日期选项
   const getRecentDates = () => {
-    const dates = []
+    const dates = [];
     for (let i = 0; i < 7; i++) {
-      const date = new Date()
-      date.setDate(date.getDate() - i)
+      const date = new Date();
+      date.setDate(date.getDate() - i);
       dates.push({
-        value: date.toISOString().split('T')[0],
-        label: i === 0 ? '今天' : i === 1 ? '昨天' : date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' }),
-        fullLabel: date.toLocaleDateString('zh-CN', { year: 'numeric', month: 'long', day: 'numeric' })
-      })
+        value: date.toISOString().split("T")[0],
+        label:
+          i === 0
+            ? "今天"
+            : i === 1
+            ? "昨天"
+            : date.toLocaleDateString("zh-CN", {
+                month: "short",
+                day: "numeric",
+              }),
+        fullLabel: date.toLocaleDateString("zh-CN", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        }),
+      });
     }
-    return dates
-  }
+    return dates;
+  };
 
-  const recentDates = getRecentDates()
-  const selectedDateInfo = recentDates.find(d => d.value === selectedDate)
+  const recentDates = getRecentDates();
+  const selectedDateInfo = recentDates.find((d) => d.value === selectedDate);
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -100,7 +112,8 @@ export const History = () => {
                   功能说明
                 </h3>
                 <p className="text-sm text-blue-700 dark:text-blue-300">
-                  历史榜单功能需要后台定时任务支持，目前显示的是模拟数据。实际部署时会通过 Supabase Edge Functions 定时保存热榜数据。
+                  历史榜单功能需要后台定时任务支持，目前显示的是模拟数据。实际部署时会通过
+                  Supabase Edge Functions 定时保存热榜数据。
                 </p>
               </div>
             </div>
@@ -124,10 +137,10 @@ export const History = () => {
                       key={date.value}
                       onClick={() => setSelectedDate(date.value)}
                       className={cn(
-                        'w-full text-left px-3 py-2 rounded-lg text-sm transition-colors',
+                        "w-full text-left px-3 py-2 rounded-lg text-sm transition-colors",
                         selectedDate === date.value
-                          ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300'
-                          : 'text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'
+                          ? "bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300"
+                          : "text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
                       )}
                     >
                       <div className="font-medium">{date.label}</div>
@@ -147,7 +160,7 @@ export const History = () => {
                     type="date"
                     value={selectedDate}
                     onChange={(e) => setSelectedDate(e.target.value)}
-                    max={new Date().toISOString().split('T')[0]}
+                    max={new Date().toISOString().split("T")[0]}
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                   />
                 </div>
@@ -176,7 +189,10 @@ export const History = () => {
               {isLoading ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {Array.from({ length: 6 }).map((_, index) => (
-                    <div key={index} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 animate-pulse">
+                    <div
+                      key={index}
+                      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 animate-pulse"
+                    >
                       <div className="flex items-center justify-between mb-3">
                         <div className="h-5 bg-gray-200 dark:bg-gray-700 rounded-full w-16"></div>
                         <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-12"></div>
@@ -221,11 +237,7 @@ export const History = () => {
               ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {historyData.map((item, index) => (
-                    <HotlistCard
-                      key={item.id}
-                      item={item}
-                      index={index}
-                    />
+                    <HotlistCard key={item.id} item={item} index={index} />
                   ))}
                 </div>
               )}
@@ -234,5 +246,5 @@ export const History = () => {
         </div>
       </ResponsiveGrid>
     </div>
-  )
-}
+  );
+};

@@ -1,4 +1,4 @@
-# mo契摸鱼热榜 - 技术架构文档
+# mo契摸鱼吧 - 技术架构文档
 
 ## 1. Architecture design
 
