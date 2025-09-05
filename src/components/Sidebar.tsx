@@ -11,6 +11,8 @@ import { Link, useLocation } from "react-router-dom";
 import { ThemeToggle } from "./ThemeToggle";
 import { DataSourceStatus } from "./DataSourceStatus";
 import { useThemeStore } from "../stores/themeStore";
+import { useOnlineUsers } from "../hooks/useOnlineUsers";
+import { useAppStore } from "../stores/appStore";
 import { cn } from "../lib/utils";
 import Logo from "/logo.jpg";
 
@@ -28,7 +30,9 @@ export const Sidebar: React.FC<SidebarProps> = ({
   onToggleCollapse,
 }) => {
   const location = useLocation();
-  const { isStealthMode } = useThemeStore();
+  const { isStealthMode } = useAppStore();
+  const { theme } = useThemeStore();
+  const { onlineCount } = useOnlineUsers();
 
   const navItems = [
     {
@@ -111,9 +115,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     <h1 className="text-xl font-bold cosmic-title animate-star-glow">
                       {isStealthMode ? "Excel Dashboard" : "mo契摸鱼吧"}
                     </h1>
-                    {/* <p className="text-sm cosmic-text-secondary">
-                      {isStealthMode ? "Data Analytics" : "多平台热榜聚合"}
-                    </p> */}
+                    <p className="text-sm cosmic-text-secondary flex items-center space-x-2">
+                      <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></span>
+                      <span>当前在线：{onlineCount}人</span>
+                    </p>
                   </div>
                 )}
               </div>
@@ -184,14 +189,14 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
           {/* 导航菜单 */}
           <nav className={cn("flex-1 space-y-2", isCollapsed ? "p-2" : "p-4")}>
-            {navItems.map((item) => {
+            {navItems.map((item, index) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
 
               return (
                 <Link
-                  key={item.path}
-                  to={item.path}
+                  key={item.path || `nav-item-${index}`}
+                  to={item.path || "#"}
                   onClick={onClose}
                   className={cn(
                     "cosmic-nav-item rounded-lg",
